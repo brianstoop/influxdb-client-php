@@ -4,14 +4,13 @@ namespace InfluxDB2;
 
 use InfluxDB2\Model\Dialect;
 use InfluxDB2\Model\Query;
-use Psr\Http\Message\ResponseInterface;
 
 /**
  * The client of the InfluxDB 2.0 that implement Query HTTP API endpoint.
  *
  * @package InfluxDB2
  */
-class QueryApi extends DefaultApi
+abstract class QueryApi extends DefaultApi
 {
     private $DEFAULT_DIALECT;
 
@@ -46,7 +45,7 @@ class QueryApi extends DefaultApi
             return null;
         }
 
-        return $result->getBody()->getContents();
+        return $result;
     }
 
     /**
@@ -70,7 +69,7 @@ class QueryApi extends DefaultApi
             return null;
         }
 
-        $parser = new FluxCsvParser($response->getBody());
+        $parser = new FluxCsvParser($response);
         $parser->parse();
 
         return $parser->tables;
@@ -97,10 +96,10 @@ class QueryApi extends DefaultApi
             return null;
         }
 
-        return new FluxCsvParser($response->getBody(), true);
+        return new FluxCsvParser($response, true);
     }
 
-    private function postQuery($query, $org, $dialect): ?ResponseInterface
+    private function postQuery($query, $org, $dialect): ?string
     {
         $orgParam = $org ?: $this->options["org"];
         $this->check("org", $orgParam);

@@ -4,15 +4,16 @@ namespace InfluxDB2;
 
 /**
  * Write time series data into InfluxDB.
+ *
  * @package InfluxDB2
  */
-class WriteApi extends DefaultApi implements Writer
+abstract class WriteApi extends DefaultApi implements Writer
 {
     public $writeOptions;
     public $pointSettings;
 
     /** @var Worker */
-    private $worker;
+    protected $worker;
     public $closed = false;
 
     /**
@@ -156,7 +157,7 @@ class WriteApi extends DefaultApi implements Writer
         unset($this->worker);
     }
 
-    private function worker(): Worker
+    protected function worker(): Worker
     {
         if (!isset($this->worker)) {
             $this->worker = new Worker($this);
@@ -165,7 +166,7 @@ class WriteApi extends DefaultApi implements Writer
         return $this->worker;
     }
 
-    private function getOption(string $optionName, string $precision = null): string
+    protected function getOption(string $optionName, string $precision = null): string
     {
         return isset($precision) ? $precision : $this->options["$optionName"];
     }
