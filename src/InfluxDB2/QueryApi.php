@@ -10,17 +10,24 @@ use InfluxDB2\Model\Query;
  *
  * @package InfluxDB2
  */
-abstract class QueryApi extends DefaultApi
+class QueryApi
 {
     private $DEFAULT_DIALECT;
 
+    private $api;
+    private $options;
+
     /**
      * QueryApi constructor.
-     * @param array $options
+     *
+     * @param array      $options
+     * @param DefaultApi $defaultApi
      */
-    public function __construct(array $options)
+    public function __construct(array $options, DefaultApi $defaultApi)
     {
-        parent::__construct($options);
+        $this->api = $defaultApi;
+        $this->options = $options;
+
         $this->DEFAULT_DIALECT = new Dialect([
             'header' => true,
             'delimiter' => ',',
@@ -102,7 +109,7 @@ abstract class QueryApi extends DefaultApi
     private function postQuery($query, $org, $dialect): ?string
     {
         $orgParam = $org ?: $this->options["org"];
-        $this->check("org", $orgParam);
+        $this->api->check("org", $orgParam);
 
         $payload = $this->generatePayload($query, $dialect);
         $queryParams = ["org" => $orgParam];
@@ -111,7 +118,7 @@ abstract class QueryApi extends DefaultApi
             return null;
         }
 
-        return $this->post($payload->__toString(), "/api/v2/query", $queryParams);
+        return $this->api->post($payload->__toString(), "/api/v2/query", $queryParams);
     }
 
     private function generatePayload($query, $dialect): ?Query

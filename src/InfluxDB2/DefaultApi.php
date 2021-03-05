@@ -8,13 +8,7 @@ abstract class DefaultApi
 {
     const DEFAULT_TIMEOUT = 10;
     public $options;
-    public $http;
-    /**
-     * Holds GuzzleHttp timeout.
-     *
-     * @var int
-     */
-    private $timeout;
+
     /**
      * DefaultApi constructor.
      * @param $options
@@ -22,7 +16,6 @@ abstract class DefaultApi
     public function __construct(array $options)
     {
         $this->options = $options;
-        $this->timeout = $this->options['timeout'] ?? self::DEFAULT_TIMEOUT;
     }
 
     /**
@@ -47,7 +40,7 @@ abstract class DefaultApi
 
     protected abstract function request($payload, $uriPath, $queryParams, $method, $timeout = null, bool $stream = false): string;
 
-    protected function check($key, $value)
+    public function check($key, $value)
     {
         if ((!isset($value) || trim($value) === '')) {
             $options = implode(', ', array_map(

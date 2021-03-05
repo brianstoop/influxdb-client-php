@@ -7,11 +7,21 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\TransferException;
 use GuzzleHttp\RedirectMiddleware;
 use InfluxDB2\ApiException;
+use InfluxDB2\DefaultApi;
 
-trait GuzzleApiTrait
+class GuzzleApi extends DefaultApi
 {
+    public $http;
+    /**
+     * Holds GuzzleHttp timeout.
+     *
+     * @var int
+     */
+    private $timeout;
+
     protected function setUpClient()
     {
+        $this->timeout = $this->options['timeout'] ?? self::DEFAULT_TIMEOUT;
         $this->http = new Client([
             'base_uri' => $this->options['url'],
             'timeout' => $this->timeout,
