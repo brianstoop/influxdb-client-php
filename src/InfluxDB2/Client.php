@@ -23,7 +23,7 @@ class Client
     public $options;
     public $closed = false;
     private $autoCloseable = array();
-    private $api = NULL;
+    private $api = null;
 
     /**
      * Client constructor.
@@ -74,7 +74,7 @@ class Client
 
     public function getApi(): DefaultApi
     {
-        if ($this->api === NULL) {
+        if ($this->api === null) {
             $this->api = new GuzzleApi($this->options);
         }
 
