@@ -36,7 +36,7 @@ abstract class DefaultApi
         return $this->request($payload, $uriPath, $queryParams, 'GET', $timeout, false);
     }
 
-    protected abstract function setUpClient();
+    abstract protected function setUpClient();
 
     protected abstract function request($payload, $uriPath, $queryParams, $method, $timeout = null, bool $stream = false): string;
 
