@@ -21,9 +21,9 @@ abstract class DefaultApi
     }
 
     /**
-     * @param $payload
-     * @param $uriPath
-     * @param $queryParams
+     * @param string|null $payload
+     * @param string $uriPath
+     * @param array $queryParams
      * @param int $timeout - Float describing the timeout of the request in seconds. Use 0 to wait indefinitely (the default behavior).
      * @param bool $stream - use streaming
      * @return string response body
@@ -33,6 +33,13 @@ abstract class DefaultApi
         return $this->request($payload, $uriPath, $queryParams, 'POST', $timeout, $stream);
     }
 
+    /**
+     * @param string|null $payload
+     * @param string    $uriPath
+     * @param array     $queryParams
+     * @param int $timeout
+     * @return string
+     */
     public function get($payload, $uriPath, $queryParams, $timeout = null): string
     {
         return $this->request($payload, $uriPath, $queryParams, 'GET', $timeout, false);
@@ -40,7 +47,16 @@ abstract class DefaultApi
 
     abstract protected function setUpClient();
 
-    protected abstract function request($payload, $uriPath, $queryParams, $method, $timeout = null, bool $stream = false): string;
+    /**
+     * @param string|null $payload
+     * @param string $uriPath
+     * @param array $queryParams
+     * @param string $method
+     * @param int  $timeout
+     * @param bool $stream
+     * @return string
+     */
+    abstract protected function request($payload, $uriPath, $queryParams, $method, $timeout = null, bool $stream = false): string;
 
     public function check($key, $value)
     {
