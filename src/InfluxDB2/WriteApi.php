@@ -151,7 +151,7 @@ class WriteApi implements Writer
         );
 
         $retry->retry(function () use ($data, $queryParams) {
-            $this->post($data, "/api/v2/write", $queryParams);
+            $this->api->post($data, "/api/v2/write", $queryParams);
         });
     }
     public function close()
